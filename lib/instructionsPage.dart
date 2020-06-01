@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'nameSelectionPage.dart';
+import 'dart:developer';
+import 'gamePage.dart';
 import 'globals.dart' as globals;
 
 String gamseTitle = globals.gameTitle;
 String version = globals.version;
 String wifiSSID = globals.wifiSSID;
+String nom;
 
 class InstructionsPage extends StatefulWidget {
   InstructionsPage({Key key, this.title}) : super(key: key);
@@ -16,6 +18,15 @@ class InstructionsPage extends StatefulWidget {
 }
 
 class _InstructionsState extends State<InstructionsPage> {
+  final _text = TextEditingController();
+  bool _validate = false;
+
+  @override
+  void dispose() {
+    _text.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,36 +38,6 @@ class _InstructionsState extends State<InstructionsPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _buildMainContent(),
-            // Image.asset('assets/slingshot1.png'),
-            // Expanded(
-            //   child: Align(
-            //     alignment: FractionalOffset.bottomCenter,
-            //     child: MaterialButton(
-            //       onPressed: () {},
-            //       padding: EdgeInsets.only(
-            //           left: 12.0, right: 12.0, top: 10.0, bottom: 10.0),
-            //       shape: RoundedRectangleBorder(
-            //           borderRadius: BorderRadius.circular(12.0)),
-            //       color: Theme.of(context).primaryColor,
-            //       child: Text(
-            //         'Suivant',
-            //         style: TextStyle(fontSize: 22),
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // MaterialButton(
-            //   onPressed: () {},
-            //   padding: EdgeInsets.only(
-            //       left: 12.0, right: 12.0, top: 10.0, bottom: 10.0),
-            //   shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(12.0)),
-            //   color: Theme.of(context).primaryColor,
-            //   child: Text(
-            //     'Suivant',
-            //     style: TextStyle(fontSize: 22),
-            //   ),
-            // ),
           ],
         ),
       ),
@@ -65,8 +46,8 @@ class _InstructionsState extends State<InstructionsPage> {
 
   Widget _buildMainContent() {
     final theme = Theme.of(context);
-    final headingStyle = theme.textTheme.headline6
-        .copyWith(fontWeight: FontWeight.bold);
+    final headingStyle =
+        theme.textTheme.headline6.copyWith(fontWeight: FontWeight.bold);
     return Expanded(
       child: ListView(padding: EdgeInsets.all(16), children: [
         Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -77,16 +58,42 @@ class _InstructionsState extends State<InstructionsPage> {
           SizedBox(height: 10),
           Text('2. Désactivez les données mobiles', style: headingStyle),
           SizedBox(height: 10),
-          Text('3. Appuyez sur Suivant', style: headingStyle),
-          SizedBox(height: 100),
+          Text('3. Choisissez un nom (sera affiché sur le tableau des scores)',
+              style: headingStyle),
+          SizedBox(height: 10),
+          Padding(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            child: TextField(
+              controller: _text,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Votre Nom',
+                errorText: _validate ? 'Saisissez un nom' : null,
+                errorStyle: TextStyle(
+                  fontSize: 16.0,
+                ),
+              ),
+              onChanged: (text) {
+                nom = text;
+              },
+            ),
+          ),
+          SizedBox(height: 25),
+          Text('4. Appuyez sur Suivant', style: headingStyle),
+          SizedBox(height: 80),
           RaisedButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        NameSelectionPage(title: '$gameTitle')),
-              );
+              setState(() {
+                _text.text.isEmpty ? _validate = true : _validate = false;
+              });
+              if (_validate == false) {
+                log('Nom = $nom');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => GamePage(nomJoueur: nom, title: '$gameTitle')),
+                );
+              }
             },
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -96,7 +103,7 @@ class _InstructionsState extends State<InstructionsPage> {
                 Icon(Icons.chevron_right),
               ],
             ),
-          )
+          ),
         ]),
       ]),
     );

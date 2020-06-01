@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'splashScreen.dart';
 import 'instructionsPage.dart';
 import 'globals.dart' as globals;
 import 'theme.dart';
@@ -8,14 +9,16 @@ String gameTitle = globals.gameTitle;
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '$gameTitle',
       theme: lightTheme,
       darkTheme: darkTheme,
-      home: InstructionsPage(title: '$gameTitle'),
+      debugShowCheckedModeBanner: false,
+      home: InstructionsPage(
+        title: '$gameTitle',
+      ),
     );
   }
 }
