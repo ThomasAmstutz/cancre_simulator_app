@@ -1,3 +1,4 @@
+import 'package:cancre_simulator_app/settingsPage.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
 import 'gamePage.dart';
@@ -10,7 +11,6 @@ String nom;
 
 class InstructionsPage extends StatefulWidget {
   InstructionsPage({Key key}) : super(key: key);
-
 
   @override
   _InstructionsState createState() => _InstructionsState();
@@ -31,6 +31,23 @@ class _InstructionsState extends State<InstructionsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(gameTitle.toUpperCase() + " " + version),
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Settings()),
+                );
+              },
+              child: Icon(
+                Icons.settings,
+                size: 26.0,
+              ),
+            ),
+          ),
+        ],
       ),
       body: Center(
         child: Column(
@@ -90,7 +107,8 @@ class _InstructionsState extends State<InstructionsPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => GamePage(nomJoueur: nom, title: '$gameTitle')),
+                      builder: (context) =>
+                          GamePage(nomJoueur: nom, title: '$gameTitle')),
                 );
               }
             },
