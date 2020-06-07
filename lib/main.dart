@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'splashScreen.dart';
 import 'instructionsPage.dart';
 import 'globals.dart' as globals;
 import 'theme.dart';
@@ -16,9 +15,8 @@ class MyApp extends StatelessWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       debugShowCheckedModeBanner: false,
-      home: InstructionsPage(
-        title: '$gameTitle',
-      ),
+      // home: Splash(),
+      home: InstructionsPage(),
     );
   }
 }

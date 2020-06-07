@@ -3,15 +3,14 @@ import 'dart:developer';
 import 'gamePage.dart';
 import 'globals.dart' as globals;
 
-String gamseTitle = globals.gameTitle;
+String gameTitle = globals.gameTitle;
 String version = globals.version;
 String wifiSSID = globals.wifiSSID;
 String nom;
 
 class InstructionsPage extends StatefulWidget {
-  InstructionsPage({Key key, this.title}) : super(key: key);
+  InstructionsPage({Key key}) : super(key: key);
 
-  final String title;
 
   @override
   _InstructionsState createState() => _InstructionsState();
@@ -31,7 +30,7 @@ class _InstructionsState extends State<InstructionsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title.toUpperCase() + " " + version),
+        title: Text(gameTitle.toUpperCase() + " " + version),
       ),
       body: Center(
         child: Column(
