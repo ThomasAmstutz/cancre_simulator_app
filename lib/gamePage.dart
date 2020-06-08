@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:sensors/sensors.dart';
 import 'dart:developer';
@@ -10,8 +11,8 @@ import 'globals.dart' as globals;
 String gameTitle = globals.gameTitle;
 String version = globals.version;
 String wifiSSID = globals.wifiSSID;
-String ip = '192.168.1.1';
-String port = '1234';
+String ip;
+String port;
 
 Socket socket;
 Timer timer;
@@ -27,6 +28,7 @@ class GamePage extends StatefulWidget {
 }
 
 class _GameState extends State<GamePage> {
+  SharedPreferences sharedPreferences;
   List<double> _accelerometerValues;
   List<double> _userAccelerometerValues;
   List<double> _gyroscopeValues;
@@ -36,6 +38,20 @@ class _GameState extends State<GamePage> {
   @override
   void initState() {
     super.initState();
+
+    SharedPreferences.getInstance().then((SharedPreferences sp) {
+      sharedPreferences = sp;
+      SharedPreferences.getInstance();
+      ip = sharedPreferences.getString('ipSrv');
+      if (ip == null) {
+        ip = globals.ipServer;
+      }
+      port = sharedPreferences.getString('portSrv');
+      if (port == null) {
+        port = globals.portServer;
+      }
+      setState(() {});
+    });
 
     _sendName().then((value) {
       log('Nom envoyé');
@@ -66,26 +82,26 @@ class _GameState extends State<GamePage> {
   }
 
   Future _sendName() async {
-    // Socket socket = await Socket.connect('$ip', int.parse(port));
-    // log('Connecté');
+    Socket socket = await Socket.connect('$ip', int.parse(port));
+    log('Connecté');
 
-    // socket.add(utf8.encode(widget.nomJoueur));
+    socket.add(utf8.encode(widget.nomJoueur));
     await Future.delayed(Duration(seconds: 2));
 
-    // socket.close();
+    socket.close();
   }
 
   Future _sendData(List<String> accelerometer, List<String> gyroscope,
       List<String> userAccelerometer) async {
-    // Socket socket = await Socket.connect('$ip', int.parse(port));
-    // log('Connecté');
+    Socket socket = await Socket.connect('$ip', int.parse(port));
+    log('Connecté');
 
     socket.add(utf8.encode(accelerometer.toString()));
     socket.add(utf8.encode(gyroscope.toString()));
     socket.add(utf8.encode(userAccelerometer.toString()));
     // await Future.delayed(Duration(seconds: 2));
 
-    // // socket.close();
+    socket.close();
   }
 
   @override

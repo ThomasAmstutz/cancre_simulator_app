@@ -15,7 +15,6 @@ class MyApp extends StatelessWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       debugShowCheckedModeBanner: false,
-      // home: Splash(),
       home: InstructionsPage(),
     );
   }
