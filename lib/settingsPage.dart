@@ -11,6 +11,8 @@ String displayedIP;
 String displayedPort;
 String message;
 
+var _controller = TextEditingController();
+
 class Settings extends StatefulWidget {
   Settings({Key key}) : super(key: key);
 
@@ -95,10 +97,14 @@ class _SettingsState extends State<Settings> {
           Padding(
             padding: EdgeInsets.only(left: 20, right: 20),
             child: TextField(
-              controller: TextEditingController(),
+              controller: _controller,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Message à envoyer',
+                suffixIcon: IconButton(
+                  onPressed: () => _controller.clear(),
+                  icon: Icon(Icons.clear),
+                ),
               ),
               onChanged: (text) {
                 message = text;
