@@ -91,6 +91,16 @@ class _GameState extends State<GamePage> {
     socket.close();
   }
 
+  Future _sendClick() async {
+    Socket socket = await Socket.connect('$ip', int.parse(port));
+    log('Connecté');
+
+    socket.add(utf8.encode("CLIC"));
+    await Future.delayed(Duration(seconds: 2));
+
+    socket.close();
+  }
+
   Future _sendData(List<String> accelerometer, List<String> gyroscope,
       List<String> userAccelerometer) async {
     Socket socket = await Socket.connect('$ip', int.parse(port));
@@ -148,6 +158,7 @@ class _GameState extends State<GamePage> {
             child: InkWell(
               onTap: () {
                 log('Nom = ' + widget.nomJoueur);
+                _sendClick();
               },
               child: Container(
                 child: ClipRRect(
