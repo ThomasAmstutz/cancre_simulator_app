@@ -53,9 +53,9 @@ class _GameState extends State<GamePage> {
       setState(() {});
     });
 
-    _sendName().then((value) {
-      log('Nom envoyé');
-    });
+    _openConnection();
+
+    _sendName();
 
     // Accelerometer events
     _streamSubscriptions
@@ -81,37 +81,33 @@ class _GameState extends State<GamePage> {
     }));
   }
 
-  Future _sendName() async {
-    Socket socket = await Socket.connect('$ip', int.parse(port));
+  Future _openConnection() async {
+    socket = await Socket.connect('$ip', int.parse(port));
     log('Connecté');
+  }
 
+  _closeConnection() {
+    socket.close();
+    log('Connexion fermée');
+  }
+
+  Future _sendName() async {
     socket.add(utf8.encode(widget.nomJoueur));
     await Future.delayed(Duration(seconds: 2));
-
-    socket.close();
+    log('Nom envoyé');
   }
 
   Future _sendClick() async {
-    Socket socket = await Socket.connect('$ip', int.parse(port));
-    log('Connecté');
-
     socket.add(utf8.encode("CLIC"));
     await Future.delayed(Duration(seconds: 2));
-
-    socket.close();
   }
 
   Future _sendData(List<String> accelerometer, List<String> gyroscope,
       List<String> userAccelerometer) async {
-    Socket socket = await Socket.connect('$ip', int.parse(port));
-    log('Connecté');
-
     socket.add(utf8.encode(accelerometer.toString()));
     socket.add(utf8.encode(gyroscope.toString()));
     socket.add(utf8.encode(userAccelerometer.toString()));
     // await Future.delayed(Duration(seconds: 2));
-
-    socket.close();
   }
 
   @override
@@ -186,6 +182,17 @@ class _GameState extends State<GamePage> {
           //   padding: const EdgeInsets.all(8.0),
           //   child: Text('Gyroscope: $gyroscope'),
           // ),
+          RaisedButton(
+            onPressed: () {
+              _closeConnection();
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text('Arrêter de jouer', style: TextStyle(fontSize: 20.0)),
+              ],
+            ),
+          ),
         ]),
       ),
     );
