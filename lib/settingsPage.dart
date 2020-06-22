@@ -157,13 +157,14 @@ _changePort(String port) async {
 
 Future testConnection() async {
   print('Tentative de connexion vers : $displayedIP:$displayedPort');
-  Socket socket =
-      await Socket.connect('$displayedIP', int.parse(displayedPort));
+  Socket socket = await Socket.connect(displayedIP, int.parse(displayedPort));
+  
   print('Connecté');
-  print('Envoi du message : $message');
 
+  print('Envoi du message : $message');
   socket.add(utf8.encode(message));
-  await Future.delayed(Duration(seconds: 5));
+  
+  await Future.delayed(Duration(seconds: 10));
 
   socket.close();
 }
