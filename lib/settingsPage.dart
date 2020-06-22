@@ -144,7 +144,7 @@ _changeIP(String ip) async {
 
 _getPort() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  displayedIP = prefs.getString('portSrv') ?? '$portServer';
+  displayedPort = prefs.getString('portSrv') ?? '$portServer';
 }
 
 _changePort(String port) async {
@@ -156,12 +156,14 @@ _changePort(String port) async {
 }
 
 Future testConnection() async {
-  Socket socket =
-      await Socket.connect('$displayedIP', int.parse(displayedPort));
+  print('Tentative de connexion vers : $displayedIP:$displayedPort');
+  // Socket socket =
+      // await Socket.connect('$displayedIP', int.parse(displayedPort));
   print('Connecté');
+  print('Envoi du message : $message');
 
-  socket.add(utf8.encode(message));
+  // socket.add(utf8.encode(message));
   await Future.delayed(Duration(seconds: 5));
 
-  socket.close();
+  // socket.close();
 }
