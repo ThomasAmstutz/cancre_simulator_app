@@ -50,7 +50,7 @@ class _GameState extends State<GamePage> {
       if (port == null) {
         port = globals.portServer;
       }
-      
+
       setState(() {});
     });
 
@@ -88,6 +88,7 @@ class _GameState extends State<GamePage> {
   }
 
   _closeConnection() {
+    Navigator.pop(context);
     socket.close();
     log('Connexion fermée');
   }
@@ -144,7 +145,7 @@ class _GameState extends State<GamePage> {
       ),
       body: Center(
         child: ListView(children: [
-          SizedBox(height: 40),
+          SizedBox(height: 30),
           Container(
             alignment: Alignment.center,
             child:
@@ -159,17 +160,19 @@ class _GameState extends State<GamePage> {
               },
               child: Container(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20.0),
+                  //borderRadius: BorderRadius.circular(20.0),
                   child: Image.asset(
                     'assets/slingshot1.png',
                     height: 350,
                     width: 350,
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),
             ),
           ),
+
+          /*  Valeurs envoyées vers le serveur  */
           // SizedBox(height: 40),
           // Padding(
           //   padding: const EdgeInsets.all(8.0),
@@ -183,16 +186,13 @@ class _GameState extends State<GamePage> {
           //   padding: const EdgeInsets.all(8.0),
           //   child: Text('Gyroscope: $gyroscope'),
           // ),
+
+          SizedBox(height: 10),
           RaisedButton(
             onPressed: () {
               _closeConnection();
             },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text('Arrêter de jouer', style: TextStyle(fontSize: 20.0)),
-              ],
-            ),
+            child: Text('Arrêter de jouer', style: TextStyle(fontSize: 20.0)),
           ),
         ]),
       ),
