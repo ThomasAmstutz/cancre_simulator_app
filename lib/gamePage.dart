@@ -50,6 +50,7 @@ class _GameState extends State<GamePage> {
       if (port == null) {
         port = globals.portServer;
       }
+      
       setState(() {});
     });
 
