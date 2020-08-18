@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:cancre_simulator_app/settingsPage.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer';
 import 'gamePage.dart';
 import 'globals.dart' as globals;
@@ -17,8 +21,30 @@ class InstructionsPage extends StatefulWidget {
 }
 
 class _InstructionsState extends State<InstructionsPage> {
+  SharedPreferences sharedPreferences;
   final _text = TextEditingController();
   bool _validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    SharedPreferences.getInstance().then((SharedPreferences sp) {
+      sharedPreferences = sp;
+      SharedPreferences.getInstance();
+      ip = sharedPreferences.getString('ipSrv');
+      if (ip == null) {
+        ip = globals.ipServer;
+      }
+
+      port = sharedPreferences.getString('portSrv');
+      if (port == null) {
+        port = globals.portServer;
+      }
+
+      setState(() {});
+    });
+  }
 
   @override
   void dispose() {
@@ -99,6 +125,12 @@ class _InstructionsState extends State<InstructionsPage> {
           SizedBox(height: 80),
           RaisedButton(
             onPressed: () {
+              _openConnection();
+            },
+            child: Text('OK', style: TextStyle(fontSize: 20.0)),
+          ),
+          RaisedButton(
+            onPressed: () {
               setState(() {
                 _text.text.isEmpty ? _validate = true : _validate = false;
               });
@@ -107,8 +139,8 @@ class _InstructionsState extends State<InstructionsPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          GamePage(nomJoueur: nom, title: '$gameTitle')),
+                      builder: (context) => GamePage(
+                          nomJoueur: nom, title: '$gameTitle', socket: socket)),
                 );
               }
             },
@@ -125,4 +157,12 @@ class _InstructionsState extends State<InstructionsPage> {
       ]),
     );
   }
+}
+
+_openConnection() async {
+  socket = await Socket.connect('$ip', int.parse(port));
+  //print(socket);
+  await Future.delayed(Duration(seconds: 1));
+  // log('Connecté');
+  socket.add(utf8.encode("connexion reussie"));
 }

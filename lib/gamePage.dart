@@ -18,10 +18,12 @@ Socket socket;
 Timer timer;
 
 class GamePage extends StatefulWidget {
-  GamePage({Key key, @required this.nomJoueur, this.title}) : super(key: key);
+  GamePage({Key key, this.nomJoueur, this.title, this.socket})
+      : super(key: key);
 
   final String title;
   final String nomJoueur;
+  final Socket socket;
 
   @override
   _GameState createState() => _GameState();
@@ -46,6 +48,7 @@ class _GameState extends State<GamePage> {
       if (ip == null) {
         ip = globals.ipServer;
       }
+
       port = sharedPreferences.getString('portSrv');
       if (port == null) {
         port = globals.portServer;
@@ -54,9 +57,11 @@ class _GameState extends State<GamePage> {
       setState(() {});
     });
 
-    _openConnection();
+    socket = widget.socket;
 
     _sendName();
+
+    //_openConnection();
 
     // Accelerometer events
     _streamSubscriptions
@@ -82,26 +87,22 @@ class _GameState extends State<GamePage> {
     }));
   }
 
-  Future _openConnection() async {
-    socket = await Socket.connect('$ip', int.parse(port));
-    log('Connecté');
-  }
-
   _closeConnection() {
-    Navigator.pop(context);
+    socket.add(utf8.encode(widget.nomJoueur + "=stop"));
     socket.close();
     log('Connexion fermée');
+    Navigator.pop(context);
   }
 
   Future _sendName() async {
     socket.add(utf8.encode(widget.nomJoueur));
-    await Future.delayed(Duration(seconds: 2));
-    log('Nom envoyé');
+    // await Future.delayed(Duration(seconds: 2));
+    log('name=' + widget.nomJoueur);
   }
 
   Future _sendClick() async {
     socket.add(utf8.encode("CLIC"));
-    await Future.delayed(Duration(seconds: 2));
+    // await Future.delayed(Duration(seconds: 2));
   }
 
   Future _sendData(List<String> accelerometer, List<String> gyroscope,
@@ -109,7 +110,7 @@ class _GameState extends State<GamePage> {
     socket.add(utf8.encode(accelerometer.toString()));
     socket.add(utf8.encode(gyroscope.toString()));
     socket.add(utf8.encode(userAccelerometer.toString()));
-    // await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 2));
   }
 
   @override
@@ -151,11 +152,11 @@ class _GameState extends State<GamePage> {
             child:
                 Text('Bonne chance ' + widget.nomJoueur, style: headingStyle),
           ),
-          SizedBox(height: 60),
+          //SizedBox(height: 60),
+          SizedBox(height: 5),
           Material(
             child: InkWell(
               onTap: () {
-                log('Nom = ' + widget.nomJoueur);
                 _sendClick();
               },
               child: Container(
@@ -173,21 +174,21 @@ class _GameState extends State<GamePage> {
           ),
 
           /*  Valeurs envoyées vers le serveur  */
-          // SizedBox(height: 40),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: Text('Accelerometer: $accelerometer'),
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: Text('UserAccelerometer: $userAccelerometer'),
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: Text('Gyroscope: $gyroscope'),
-          // ),
+          SizedBox(height: 40),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('Accelerometer: $accelerometer'),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('UserAccelerometer: $userAccelerometer'),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('Gyroscope: $gyroscope'),
+          ),
 
-          SizedBox(height: 10),
+          // SizedBox(height: 10),
           RaisedButton(
             onPressed: () {
               _closeConnection();
