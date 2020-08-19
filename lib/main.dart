@@ -1,3 +1,5 @@
+/* Point d'entrée de l'application */
+
 import 'package:flutter/material.dart';
 import 'screens/instructionsPage.dart';
 import 'globals.dart' as globals;

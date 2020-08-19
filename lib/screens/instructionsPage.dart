@@ -1,3 +1,5 @@
+/* Page d'instructions */
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -99,12 +101,9 @@ class _InstructionsState extends State<InstructionsPage> {
         Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Text('Instructions :', style: theme.textTheme.headline4),
           SizedBox(height: 25),
-          Text('1. Connectez-vous au réseau Wifi du stand ($wifiSSID)',
-              style: headingStyle),
+          Text('$p1', style: headingStyle),
           SizedBox(height: 15),
-          Text(
-              '2. Choisissez un nom (sera affiché sur le tableau des scores) et appuyez sur OK',
-              style: headingStyle),
+          Text('$p2', style: headingStyle),
           SizedBox(height: 15),
           TextField(
             controller: _text,
@@ -125,7 +124,7 @@ class _InstructionsState extends State<InstructionsPage> {
             },
           ),
           SizedBox(height: 15),
-          Text('3. Appuyez sur Suivant', style: headingStyle),
+          Text('$p3', style: headingStyle),
           SizedBox(height: 180),
           showOKButton
               ? RaisedButton(
@@ -139,29 +138,36 @@ class _InstructionsState extends State<InstructionsPage> {
                       _openConnection();
                     }
                   },
-                  child: Text('OK', style: TextStyle(fontSize: 20.0)),
+                  child:
+                      Text('Définir le nom', style: TextStyle(fontSize: 20.0)),
                 )
               : SizedBox(height: 0),
-          //SizedBox(height: 5),
           showSuivantButton
               ? RaisedButton(
                   onPressed: () {
-                    log('Nom = $nom');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => GamePage(
-                              nomJoueur: nom,
-                              title: '$gameTitle',
-                              socket: socket)),
-                    );
+                    setState(() {
+                      _text.text.isEmpty ? _validate = true : _validate = false;
+                    });
+                    if (_validate == false) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GamePage(
+                                nomJoueur: nom,
+                                title: '$gameTitle',
+                                socket: socket)),
+                      );
+                    } else {
+                      setState(() => showSuivantButton = false);
+                      setState(() => showOKButton = true);
+                    }
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Text('Suivant', style: TextStyle(fontSize: 20.0)),
-                      SizedBox(width: 10.0),
-                      Icon(Icons.chevron_right),
+                      Text('Jouer', style: TextStyle(fontSize: 20.0)),
+                      //SizedBox(width: 10.0),
+                      //Icon(Icons.chevron_right),
                     ],
                   ),
                 )
@@ -174,8 +180,11 @@ class _InstructionsState extends State<InstructionsPage> {
 
 _openConnection() async {
   socket = await Socket.connect('$ip', int.parse(port));
-  //print(socket);
   await Future.delayed(Duration(seconds: 1));
-  // log('Connecté');
   socket.add(utf8.encode("connexion reussie"));
 }
+
+final String p1 = '1. Connectez-vous au réseau Wifi du stand ($wifiSSID)';
+final String p2 =
+    '2. Choisissez un nom (sera affiché sur le tableau des scores) et appuyez sur Suivant';
+final String p3 = '3. Appuyez sur Jouer';

@@ -9,6 +9,8 @@ import 'dart:developer';
 
 import '../globals.dart' as globals;
 
+/* Page de jeu */
+
 String gameTitle = globals.gameTitle;
 String version = globals.version;
 String wifiSSID = globals.wifiSSID;
@@ -185,9 +187,9 @@ class _GameState extends State<GamePage> {
             child: Text('Gyroscope: $gyroscope'),
           ),*/
 
-          SizedBox(height: 55),
+          SizedBox(height: 45),
           Padding(
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.all(16),
             child: RaisedButton(
               onPressed: () {
                 _closeConnection();

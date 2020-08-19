@@ -1,3 +1,5 @@
+/* Page de paramètres du serveur TCP */
+
 import 'dart:io';
 import 'dart:convert';
 
@@ -63,7 +65,7 @@ class _SettingsState extends State<Settings> {
     return Expanded(
       child: ListView(padding: EdgeInsets.all(16), children: [
         Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          SizedBox(height: 10),
+          SizedBox(height: 50),
           Text('Paramètres du serveur'),
           Padding(
             padding: EdgeInsets.only(left: 20, right: 20),
@@ -92,7 +94,7 @@ class _SettingsState extends State<Settings> {
             ),
           ),
           // Test de communication
-          SizedBox(height: 80),
+          SizedBox(height: 50),
           Text('Test de la connexion'),
           Padding(
             padding: EdgeInsets.only(left: 20, right: 20),
@@ -111,7 +113,7 @@ class _SettingsState extends State<Settings> {
               },
             ),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 180),
           RaisedButton(
             onPressed: () {
               testConnection();
