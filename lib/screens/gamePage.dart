@@ -6,7 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:sensors/sensors.dart';
 import 'dart:developer';
-import 'globals.dart' as globals;
+
+import '../globals.dart' as globals;
 
 String gameTitle = globals.gameTitle;
 String version = globals.version;
@@ -60,8 +61,6 @@ class _GameState extends State<GamePage> {
     socket = widget.socket;
 
     _sendName();
-
-    //_openConnection();
 
     // Accelerometer events
     _streamSubscriptions
@@ -152,8 +151,7 @@ class _GameState extends State<GamePage> {
             child:
                 Text('Bonne chance ' + widget.nomJoueur, style: headingStyle),
           ),
-          //SizedBox(height: 60),
-          SizedBox(height: 5),
+          SizedBox(height: 40),
           Material(
             child: InkWell(
               onTap: () {
@@ -161,7 +159,6 @@ class _GameState extends State<GamePage> {
               },
               child: Container(
                 child: ClipRRect(
-                  //borderRadius: BorderRadius.circular(20.0),
                   child: Image.asset(
                     'assets/slingshot1.png',
                     height: 350,
@@ -174,7 +171,7 @@ class _GameState extends State<GamePage> {
           ),
 
           /*  Valeurs envoyées vers le serveur  */
-          SizedBox(height: 40),
+          /*SizedBox(height: 40),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text('Accelerometer: $accelerometer'),
@@ -186,15 +183,18 @@ class _GameState extends State<GamePage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text('Gyroscope: $gyroscope'),
-          ),
+          ),*/
 
-          // SizedBox(height: 10),
-          RaisedButton(
-            onPressed: () {
-              _closeConnection();
-            },
-            child: Text('Arrêter de jouer', style: TextStyle(fontSize: 20.0)),
-          ),
+          SizedBox(height: 55),
+          Padding(
+            padding: EdgeInsets.all(20),
+            child: RaisedButton(
+              onPressed: () {
+                _closeConnection();
+              },
+              child: Text('Arrêter de jouer', style: TextStyle(fontSize: 20.0)),
+            ),
+          )
         ]),
       ),
     );

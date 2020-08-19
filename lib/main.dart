@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'instructionsPage.dart';
+import 'screens/instructionsPage.dart';
 import 'globals.dart' as globals;
 import 'theme.dart';
 

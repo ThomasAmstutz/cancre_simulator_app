@@ -1,7 +1,7 @@
 String gameTitle = 'Cancre Simulator';
 
-String wifiSSID = '<réseau>';
-String version = '0.7';
+String wifiSSID = '$gameTitle';
+String version = '0.7.1';
 
-String ipServer = '192.168.0.192';
+String ipServer = '192.168.0.10';
 String portServer = '8899';

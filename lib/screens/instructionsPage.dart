@@ -1,17 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cancre_simulator_app/settingsPage.dart';
+import 'package:cancre_simulator_app/screens/settingsPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer';
 import 'gamePage.dart';
-import 'globals.dart' as globals;
+import '../globals.dart' as globals;
 
 String gameTitle = globals.gameTitle;
 String version = globals.version;
 String wifiSSID = globals.wifiSSID;
 String nom;
+
+bool showSuivantButton = false;
+bool showOKButton = true;
 
 class InstructionsPage extends StatefulWidget {
   InstructionsPage({Key key}) : super(key: key);
@@ -97,62 +101,71 @@ class _InstructionsState extends State<InstructionsPage> {
           SizedBox(height: 25),
           Text('1. Connectez-vous au réseau Wifi du stand ($wifiSSID)',
               style: headingStyle),
-          SizedBox(height: 10),
-          Text('2. Désactivez les données mobiles', style: headingStyle),
-          SizedBox(height: 10),
-          Text('3. Choisissez un nom (sera affiché sur le tableau des scores)',
+          SizedBox(height: 15),
+          Text(
+              '2. Choisissez un nom (sera affiché sur le tableau des scores) et appuyez sur OK',
               style: headingStyle),
-          SizedBox(height: 10),
-          Padding(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: TextField(
-              controller: _text,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Votre Nom',
-                errorText: _validate ? 'Saisissez un nom' : null,
-                errorStyle: TextStyle(
-                  fontSize: 16.0,
-                ),
+          SizedBox(height: 15),
+          TextField(
+            controller: _text,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9]")),
+              LengthLimitingTextInputFormatter(14)
+            ],
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Votre Nom',
+              errorText: _validate ? 'Saisissez un nom' : null,
+              errorStyle: TextStyle(
+                fontSize: 16.0,
               ),
-              onChanged: (text) {
-                nom = text;
-              },
             ),
-          ),
-          SizedBox(height: 25),
-          Text('4. Appuyez sur Suivant', style: headingStyle),
-          SizedBox(height: 80),
-          RaisedButton(
-            onPressed: () {
-              _openConnection();
+            onChanged: (text) {
+              nom = text;
             },
-            child: Text('OK', style: TextStyle(fontSize: 20.0)),
           ),
-          RaisedButton(
-            onPressed: () {
-              setState(() {
-                _text.text.isEmpty ? _validate = true : _validate = false;
-              });
-              if (_validate == false) {
-                log('Nom = $nom');
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => GamePage(
-                          nomJoueur: nom, title: '$gameTitle', socket: socket)),
-                );
-              }
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text('Suivant', style: TextStyle(fontSize: 20.0)),
-                SizedBox(width: 10.0),
-                Icon(Icons.chevron_right),
-              ],
-            ),
-          ),
+          SizedBox(height: 15),
+          Text('3. Appuyez sur Suivant', style: headingStyle),
+          SizedBox(height: 180),
+          showOKButton
+              ? RaisedButton(
+                  onPressed: () {
+                    setState(() {
+                      _text.text.isEmpty ? _validate = true : _validate = false;
+                    });
+                    if (_validate == false) {
+                      setState(() => showSuivantButton = true);
+                      setState(() => showOKButton = false);
+                      _openConnection();
+                    }
+                  },
+                  child: Text('OK', style: TextStyle(fontSize: 20.0)),
+                )
+              : SizedBox(height: 0),
+          //SizedBox(height: 5),
+          showSuivantButton
+              ? RaisedButton(
+                  onPressed: () {
+                    log('Nom = $nom');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => GamePage(
+                              nomJoueur: nom,
+                              title: '$gameTitle',
+                              socket: socket)),
+                    );
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text('Suivant', style: TextStyle(fontSize: 20.0)),
+                      SizedBox(width: 10.0),
+                      Icon(Icons.chevron_right),
+                    ],
+                  ),
+                )
+              : SizedBox(height: 0),
         ]),
       ]),
     );
