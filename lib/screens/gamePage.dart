@@ -98,16 +98,19 @@ class _GameState extends State<GamePage> {
   }
 
   Future _welcome() async {
-    socket.add(utf8.encode(clientId.toString()));
-    socket.add(utf8.encode(widget.nomJoueur));
-    // await Future.delayed(Duration(seconds: 2));
+    try {
+      socket.add(utf8.encode(clientId.toString()));
+      socket.add(utf8.encode(widget.nomJoueur));
+    } on Exception catch (_) {
+      print(Exception);
+    }
+    
     log('name=' + widget.nomJoueur);
-    log('name=' + clientId.toString());
+    log('id=' + clientId.toString());
   }
 
   Future _sendClick() async {
     socket.add(utf8.encode("CLIC"));
-    // await Future.delayed(Duration(seconds: 2));
   }
 
   Future _sendData(List<String> accelerometer, List<String> gyroscope,
