@@ -14,6 +14,8 @@ import '../globals.dart' as globals;
 String gameTitle = globals.gameTitle;
 String version = globals.version;
 String wifiSSID = globals.wifiSSID;
+int clientId = globals.id;
+
 String ip;
 String port;
 
@@ -62,7 +64,7 @@ class _GameState extends State<GamePage> {
 
     socket = widget.socket;
 
-    _sendName();
+    _welcome();
 
     // Accelerometer events
     _streamSubscriptions
@@ -95,10 +97,12 @@ class _GameState extends State<GamePage> {
     Navigator.pop(context);
   }
 
-  Future _sendName() async {
+  Future _welcome() async {
+    socket.add(utf8.encode(clientId.toString()));
     socket.add(utf8.encode(widget.nomJoueur));
     // await Future.delayed(Duration(seconds: 2));
     log('name=' + widget.nomJoueur);
+    log('name=' + clientId.toString());
   }
 
   Future _sendClick() async {

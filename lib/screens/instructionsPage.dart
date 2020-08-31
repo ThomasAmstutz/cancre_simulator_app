@@ -7,7 +7,6 @@ import 'package:cancre_simulator_app/screens/settingsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:developer';
 import 'gamePage.dart';
 import '../globals.dart' as globals;
 
@@ -18,6 +17,7 @@ String nom;
 
 bool showSuivantButton = false;
 bool showOKButton = true;
+bool isTextFieldEnabled = true;
 
 class InstructionsPage extends StatefulWidget {
   InstructionsPage({Key key}) : super(key: key);
@@ -105,24 +105,36 @@ class _InstructionsState extends State<InstructionsPage> {
           SizedBox(height: 15),
           Text('$p2', style: headingStyle),
           SizedBox(height: 15),
-          TextField(
-            controller: _text,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9]")),
-              LengthLimitingTextInputFormatter(14)
-            ],
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Votre Nom',
-              errorText: _validate ? 'Saisissez un nom' : null,
-              errorStyle: TextStyle(
-                fontSize: 16.0,
+          isTextFieldEnabled ? 
+          new TextFormField(controller: _text) :
+          new FocusScope(
+            node: new FocusScopeNode(),
+            child: new TextFormField(
+              controller: _text,
+              style: theme.textTheme.subhead.copyWith(
+                color: theme.disabledColor,
               ),
-            ),
-            onChanged: (text) {
-              nom = text;
-            },
-          ),
+              decoration: new InputDecoration(
+                hintText: isTextFieldEnabled ? 'Type something' : 'You cannot focus me',
+              ),
+          // TextField(
+          //   controller: _text,
+          //   inputFormatters: [
+          //     FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9]")),
+          //     LengthLimitingTextInputFormatter(14)
+          //   ],
+          //   decoration: InputDecoration(
+          //     border: OutlineInputBorder(),
+          //     labelText: 'Votre Nom',
+          //     errorText: _validate ? 'Saisissez un nom' : null,
+          //     errorStyle: TextStyle(
+          //       fontSize: 16.0,
+          //     ),
+          //   ),
+          //   onChanged: (text) {
+          //     nom = text;
+          //   },
+          // ) : ,
           SizedBox(height: 15),
           Text('$p3', style: headingStyle),
           SizedBox(height: 180),
@@ -180,7 +192,6 @@ class _InstructionsState extends State<InstructionsPage> {
 
 _openConnection() async {
   socket = await Socket.connect('$ip', int.parse(port));
-  await Future.delayed(Duration(seconds: 1));
   socket.add(utf8.encode("connexion reussie"));
 }
 
