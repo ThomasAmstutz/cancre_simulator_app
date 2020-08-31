@@ -111,12 +111,21 @@ class _InstructionsState extends State<InstructionsPage> {
             node: new FocusScopeNode(),
             child: new TextFormField(
               controller: _text,
-              style: theme.textTheme.subhead.copyWith(
-                color: theme.disabledColor,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9]")),
+                LengthLimitingTextInputFormatter(14)
+              ],
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Votre Nom',
+                errorText: _validate ? 'Saisissez un nom' : null,
+                errorStyle: TextStyle(
+                  fontSize: 16.0,
+                ),
               ),
-              decoration: new InputDecoration(
-                hintText: isTextFieldEnabled ? 'Type something' : 'You cannot focus me',
-              ),
+              onChanged: (text) {
+                nom = text;
+              },
           // TextField(
           //   controller: _text,
           //   inputFormatters: [
