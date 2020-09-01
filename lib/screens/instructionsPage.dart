@@ -192,7 +192,7 @@ _openConnection() async {
     // _text.text = event.toString();
     List<int> eventId;
     eventId.add(event[event.length - 3]);
-    _text.text = eventId.toString();
+    _text.text = eventId[0].toString();
     // String receivedEvent = utf8.decode(event);
     // _text.text = receivedEvent;
     // globals.id = event[0];
