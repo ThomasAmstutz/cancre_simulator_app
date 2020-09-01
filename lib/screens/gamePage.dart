@@ -64,7 +64,7 @@ class _GameState extends State<GamePage> {
 
     socket = widget.socket;
 
-    // welcomeReceived();
+    welcomeReceived();
 
     // Accelerometer events
     _streamSubscriptions
@@ -101,9 +101,11 @@ class _GameState extends State<GamePage> {
     // Initialisation du packet de réponse
     List<int> packet;
 
-    packet.add(clientId);
+    String client = clientId.toString();
+
+    packet.addAll(utf8.encode(client));
     packet.addAll(utf8.encode(widget.nomJoueur));
-    packet.insert(0, packet.length);
+    packet.insertAll(0, utf8.encode(packet.length.toString()));
     
     socket.add(packet);
 
