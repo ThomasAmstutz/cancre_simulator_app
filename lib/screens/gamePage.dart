@@ -99,7 +99,6 @@ class _GameState extends State<GamePage> {
   }
 
   Future _welcome() async {
-    // socket.listen((event) { });
     // List<int> packet = utf8.encode(widget.nomJoueur);
     // packet.insert(0, clientId);
     // packet.insert(0, packet.length);

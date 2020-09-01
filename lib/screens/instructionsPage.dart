@@ -182,8 +182,12 @@ class _InstructionsState extends State<InstructionsPage> {
 
 _openConnection() async {
   isTextFieldReadOnly = true;
-  
+
   socket = await Socket.connect('$ip', int.parse(port));
+
+  socket.listen((List<int> event) {
+    print(utf8.decode(event));
+  });
 }
 
 final String p1 = '1. Connectez-vous au réseau Wifi du stand ($wifiSSID)';
