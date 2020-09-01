@@ -17,7 +17,7 @@ String nom;
 
 bool showSuivantButton = false;
 bool showOKButton = true;
-bool isTextFieldEnabled = true;
+bool isTextFieldReadOnly = false;
 
 class InstructionsPage extends StatefulWidget {
   InstructionsPage({Key key}) : super(key: key);
@@ -30,6 +30,7 @@ class _InstructionsState extends State<InstructionsPage> {
   SharedPreferences sharedPreferences;
   final _text = TextEditingController();
   bool _validate = false;
+  
 
   @override
   void initState() {
@@ -107,6 +108,7 @@ class _InstructionsState extends State<InstructionsPage> {
           SizedBox(height: 15),
           TextField(
             controller: _text,
+            readOnly: isTextFieldReadOnly,
             inputFormatters: [
               FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9]")),
               LengthLimitingTextInputFormatter(14)
@@ -180,6 +182,7 @@ class _InstructionsState extends State<InstructionsPage> {
 
 _openConnection() async {
   socket = await Socket.connect('$ip', int.parse(port));
+  isTextFieldReadOnly = true;
 }
 
 final String p1 = '1. Connectez-vous au réseau Wifi du stand ($wifiSSID)';
