@@ -64,7 +64,7 @@ class _GameState extends State<GamePage> {
 
     socket = widget.socket;
 
-    _welcome();
+    // welcomeReceived();
 
     // Accelerometer events
     _streamSubscriptions
@@ -97,25 +97,6 @@ class _GameState extends State<GamePage> {
     Navigator.pop(context);
   }
 
-  Future _welcome() async {
-    
-    // Initialisation du packet de réponse
-    List<int> packet;
-
-    packet.add(clientId);
-    packet.addAll(utf8.encode("Welcome"));
-    packet.insert(0, packet.length);
-    
-    socket.add(packet);
-
-    // socket.write(utf8.encode(clientId.toString()));
-    // socket.write(utf8.encode(widget.nomJoueur));
-    
-    // socket.add(utf8.encode(clientId.toString()));
-    // socket.add(utf8.encode(widget.nomJoueur));
-
-  }
-
   Future welcomeReceived() async {
     // Initialisation du packet de réponse
     List<int> packet;
@@ -125,6 +106,12 @@ class _GameState extends State<GamePage> {
     packet.insert(0, packet.length);
     
     socket.add(packet);
+
+    // socket.write(utf8.encode(clientId.toString()));
+    // socket.write(utf8.encode(widget.nomJoueur));
+    
+    // socket.add(utf8.encode(clientId.toString()));
+    // socket.add(utf8.encode(widget.nomJoueur));
   }
 
   Future _sendClick() async {
