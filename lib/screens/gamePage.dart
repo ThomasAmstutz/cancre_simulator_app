@@ -103,7 +103,7 @@ class _GameState extends State<GamePage> {
     List<int> packet;
 
     packet.add(clientId);
-    packet.addAll(utf8.encode(widget.nomJoueur));
+    packet.addAll(utf8.encode("Welcome"));
     packet.insert(0, packet.length);
     
     socket.add(packet);
@@ -114,6 +114,17 @@ class _GameState extends State<GamePage> {
     // socket.add(utf8.encode(clientId.toString()));
     // socket.add(utf8.encode(widget.nomJoueur));
 
+  }
+
+  Future welcomeReceived() async {
+    // Initialisation du packet de réponse
+    List<int> packet;
+
+    packet.add(clientId);
+    packet.addAll(utf8.encode(widget.nomJoueur));
+    packet.insert(0, packet.length);
+    
+    socket.add(packet);
   }
 
   Future _sendClick() async {
