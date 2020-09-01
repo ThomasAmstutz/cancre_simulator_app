@@ -187,7 +187,7 @@ _openConnection() async {
   socket = await Socket.connect('$ip', int.parse(port));
 
   socket.listen((List<int> event) {
-    log(utf8.decode(event));
+    debugPrint(utf8.decode(event));
   });
 }
 
