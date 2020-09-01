@@ -1,6 +1,7 @@
 /* Page d'instructions */
 
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cancre_simulator_app/screens/settingsPage.dart';
@@ -186,7 +187,7 @@ _openConnection() async {
   socket = await Socket.connect('$ip', int.parse(port));
 
   socket.listen((List<int> event) {
-    print(utf8.decode(event));
+    log(utf8.decode(event));
   });
 }
 
