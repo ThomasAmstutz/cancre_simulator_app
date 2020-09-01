@@ -18,6 +18,7 @@ String nom;
 bool showSuivantButton = false;
 bool showOKButton = true;
 bool isTextFieldReadOnly = false;
+final _text = TextEditingController();
 
 class InstructionsPage extends StatefulWidget {
   InstructionsPage({Key key}) : super(key: key);
@@ -28,7 +29,7 @@ class InstructionsPage extends StatefulWidget {
 
 class _InstructionsState extends State<InstructionsPage> {
   SharedPreferences sharedPreferences;
-  final _text = TextEditingController();
+  // final _text = TextEditingController();
   bool _validate = false;
   
 
@@ -188,8 +189,10 @@ _openConnection() async {
 
   // Réception et traitement du packet
   socket.listen((List<int> event) {
-    globals.id = event[0];
-    print(utf8.decode(event));
+    String receivedEvent = utf8.decode(event);
+    _text.text = receivedEvent;
+    // globals.id = event[0];
+    // print(utf8.decode(event));
   });
 
 }
