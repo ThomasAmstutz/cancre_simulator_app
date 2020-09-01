@@ -191,6 +191,7 @@ _openConnection() async {
   socket.listen((List<int> event) {
     int newClientId = int.parse(event.toString().substring(142, 144));
     globals.id = newClientId;
+    _text.text = newClientId.toString();
   });
 
 }
