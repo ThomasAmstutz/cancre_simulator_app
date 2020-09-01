@@ -11,7 +11,7 @@ import 'gamePage.dart';
 import '../globals.dart' as globals;
 
 String gameTitle = globals.gameTitle;
-String version = globals.version;
+String appBarTitle = globals.gameVersionTitle;
 String wifiSSID = globals.wifiSSID;
 String nom;
 
@@ -63,7 +63,7 @@ class _InstructionsState extends State<InstructionsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(gameTitle.toUpperCase() + " " + version),
+        title: Text(appBarTitle),
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.only(right: 20.0),
@@ -181,8 +181,9 @@ class _InstructionsState extends State<InstructionsPage> {
 }
 
 _openConnection() async {
-  socket = await Socket.connect('$ip', int.parse(port));
   isTextFieldReadOnly = true;
+  
+  socket = await Socket.connect('$ip', int.parse(port));
 }
 
 final String p1 = '1. Connectez-vous au réseau Wifi du stand ($wifiSSID)';

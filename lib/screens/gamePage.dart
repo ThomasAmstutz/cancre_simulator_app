@@ -13,7 +13,7 @@ import '../globals.dart' as globals;
 /* Page de jeu */
 
 String gameTitle = globals.gameTitle;
-String version = globals.version;
+String appBarTitle = globals.gameVersionTitle;
 String wifiSSID = globals.wifiSSID;
 int clientId = globals.id;
 
@@ -99,6 +99,7 @@ class _GameState extends State<GamePage> {
   }
 
   Future _welcome() async {
+    // socket.listen((event) { });
     // List<int> packet = utf8.encode(widget.nomJoueur);
     // packet.insert(0, clientId);
     // packet.insert(0, packet.length);
@@ -106,8 +107,10 @@ class _GameState extends State<GamePage> {
 
     // socket.addStream(_packets);
     // socket.add(packet);
-    socket.add(utf8.encode(clientId.toString()));
-    socket.add(utf8.encode(widget.nomJoueur));
+    socket.write(utf8.encode(clientId.toString()));
+    socket.write(utf8.encode(widget.nomJoueur));
+    // socket.add(utf8.encode(clientId.toString()));
+    // socket.add(utf8.encode(widget.nomJoueur));
 
     log('name=' + widget.nomJoueur);
     log('id=' + clientId.toString());
@@ -149,12 +152,12 @@ class _GameState extends State<GamePage> {
         ?.map((double v) => v.toStringAsFixed(1))
         ?.toList();
 
-    timer = Timer.periodic(Duration(seconds: 2),
-        (Timer t) => _sendData(accelerometer, gyroscope, userAccelerometer));
+    // timer = Timer.periodic(Duration(seconds: 2),
+        // (Timer t) => _sendData(accelerometer, gyroscope, userAccelerometer));
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title.toUpperCase() + " " + version),
+        title: Text(appBarTitle),
       ),
       body: Center(
         child: ListView(children: [

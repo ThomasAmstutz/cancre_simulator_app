@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import '../globals.dart' as globals;
 
+String appBarTitle = globals.gameVersionTitle;
 String ipServer = globals.ipServer;
 String portServer = globals.portServer;
 String displayedIP;
