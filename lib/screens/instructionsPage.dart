@@ -1,7 +1,6 @@
 /* Page d'instructions */
 
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:cancre_simulator_app/screens/settingsPage.dart';
@@ -184,11 +183,15 @@ class _InstructionsState extends State<InstructionsPage> {
 _openConnection() async {
   isTextFieldReadOnly = true;
 
+  // Ouverture de la connexion
   socket = await Socket.connect('$ip', int.parse(port));
 
+  // Réception et traitement du packet
   socket.listen((List<int> event) {
-    debugPrint(utf8.decode(event));
+    globals.id = event[0];
+    print(utf8.decode(event));
   });
+
 }
 
 final String p1 = '1. Connectez-vous au réseau Wifi du stand ($wifiSSID)';

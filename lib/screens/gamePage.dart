@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
@@ -99,20 +98,22 @@ class _GameState extends State<GamePage> {
   }
 
   Future _welcome() async {
-    // List<int> packet = utf8.encode(widget.nomJoueur);
-    // packet.insert(0, clientId);
-    // packet.insert(0, packet.length);
-    // Stream _packets = packet as Stream;
+    
+    // Initialisation du packet de réponse
+    List<int> packet;
 
-    // socket.addStream(_packets);
-    // socket.add(packet);
-    socket.write(utf8.encode(clientId.toString()));
-    socket.write(utf8.encode(widget.nomJoueur));
+    packet.add(clientId);
+    packet.addAll(utf8.encode(widget.nomJoueur));
+    packet.insert(0, packet.length);
+    
+    socket.add(packet);
+
+    // socket.write(utf8.encode(clientId.toString()));
+    // socket.write(utf8.encode(widget.nomJoueur));
+    
     // socket.add(utf8.encode(clientId.toString()));
     // socket.add(utf8.encode(widget.nomJoueur));
 
-    log('name=' + widget.nomJoueur);
-    log('id=' + clientId.toString());
   }
 
   Future _sendClick() async {
