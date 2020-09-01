@@ -189,7 +189,7 @@ _openConnection() async {
 
   // Réception et traitement du packet
   socket.listen((List<int> event) {
-    _text.text = event[1].toString();
+    _text.text = event.toString();
     // String receivedEvent = utf8.decode(event);
     // _text.text = receivedEvent;
     // globals.id = event[0];
