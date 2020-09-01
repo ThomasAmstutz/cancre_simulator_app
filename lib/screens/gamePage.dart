@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
@@ -98,13 +99,16 @@ class _GameState extends State<GamePage> {
   }
 
   Future _welcome() async {
-    try {
-      socket.add(utf8.encode(clientId.toString()));
-      socket.add(utf8.encode(widget.nomJoueur));
-    } on Exception catch (_) {
-      print(Exception);
-    }
-    
+    // List<int> packet = utf8.encode(widget.nomJoueur);
+    // packet.insert(0, clientId);
+    // packet.insert(0, packet.length);
+    // Stream _packets = packet as Stream;
+
+    // socket.addStream(_packets);
+    // socket.add(packet);
+    socket.add(utf8.encode(clientId.toString()));
+    socket.add(utf8.encode(widget.nomJoueur));
+
     log('name=' + widget.nomJoueur);
     log('id=' + clientId.toString());
   }
