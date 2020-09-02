@@ -64,7 +64,7 @@ class _GameState extends State<GamePage> {
 
     socket = widget.socket;
 
-    // welcomeReceived();
+    welcomeReceived();
 
     // Accelerometer events
     _streamSubscriptions

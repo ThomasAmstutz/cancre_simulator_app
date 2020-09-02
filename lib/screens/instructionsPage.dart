@@ -193,23 +193,8 @@ _openConnection() async {
     globals.id = newClientId;
     _text.text = newClientId.toString();
   });
-
-  welcomeReceived();
   
 }
-
-Future welcomeReceived() async {
-    // Initialisation du packet de réponse
-    List<int> packet;
-
-    String client = clientId.toString();
-
-    packet.addAll(utf8.encode(client));
-    packet.addAll(utf8.encode(widget.nomJoueur));
-    packet.insertAll(0, utf8.encode(packet.length.toString()));
-    
-    socket.add(packet);
-  }
 
 final String p1 = '1. Connectez-vous au réseau Wifi du stand ($wifiSSID)';
 final String p2 =
